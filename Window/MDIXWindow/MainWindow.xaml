@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mdixWindow="clr-namespace:MDIXWindow"
         xmlns:mdix="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:validation="clr-namespace:MDIXWindow.Validation"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow}"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -29,6 +30,123 @@
             </mdix:DrawerHost.LeftDrawerContent>
             <Grid>
                 <TextBlock Text="Normal Window Content Goes Here" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+
+                    <StackPanel Orientation="Horizontal">
+                        <GroupBox Header="No Validation" MinWidth="200" Margin="10">
+                            <StackPanel>
+                                <StackPanel.DataContext>
+                                    <validation:SimpleViewModel />
+                                </StackPanel.DataContext>
+
+                                <TextBlock Text="First Name"/>
+                                <!--Explicitly setting the UpdateSourceTrigger to PropertyChanges so its updates the value as we type-->
+                                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Last Name"/>
+                                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Content="Submit" Command="{Binding SubmitCommand}" Margin="0,15"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Binding Validation" MinWidth="200" Margin="10">
+                            <StackPanel>
+                                <StackPanel.DataContext>
+                                    <validation:SimpleViewModel />
+                                </StackPanel.DataContext>
+
+                                <TextBlock Text="First Name"/>
+                                <!--Explicitly setting the UpdateSourceTrigger to PropertyChanges so its updates the value as we type-->
+                                <TextBox>
+                                    <TextBox.Text>
+                                        <Binding Path="FirstName" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                 <!--You can create your own validation rules-->
+                                                <validation:NotEmptyValidationRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <TextBlock Text="Last Name"/>
+                                <TextBox>
+                                    <TextBox.Text>
+                                        <Binding Path="LastName" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                 <!--You can put properties on your validation rule to make them more versatile-->
+                                                <validation:NotEmptyValidationRule Message="A last name is required"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Button Content="Submit" Command="{Binding SubmitCommand}" Margin="0,15"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="INotifyDataErrorInfo Validation" MinWidth="200" Margin="10">
+                            <StackPanel>
+                                <StackPanel.DataContext>
+                                    <validation:NotifyErrorInfoViewModel />
+                                </StackPanel.DataContext>
+
+                                <TextBlock Text="First Name"/>
+                                <!--Explicitly setting the UpdateSourceTrigger to PropertyChanges so its updates the value as we type-->
+                                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Last Name"/>
+                                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Content="Submit" Command="{Binding SubmitCommand}" Margin="0,15"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="DataAnnotations Validation" MinWidth="200" Margin="10">
+                            <StackPanel>
+                                <StackPanel.DataContext>
+                                    <validation:AttributeValidationViewModel />
+                                </StackPanel.DataContext>
+
+                                <TextBlock Text="First Name"/>
+                                <!--Explicitly setting the UpdateSourceTrigger to PropertyChanges so its updates the value as we type-->
+                                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Last Name"/>
+                                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Content="Submit" Command="{Binding SubmitCommand}" Margin="0,15"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Display Error With Hint" MinWidth="200" Margin="10">
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                         <!--This disable the built-in validation template--> 
+                                        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+                                        <Setter Property="mdix:HintAssist.Hint" Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+                                        <Setter Property="mdix:HintAssist.IsFloating" Value="True" />
+                                        <Style.Triggers>
+                                            <Trigger Property="Validation.HasError" Value="True">
+                                                <!--
+                                                Using an attached property for this, eventually this should get resolved by 
+                                                https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/pull/1070
+                                                -->
+                                                <Setter Property="validation:ResourcesEx.PrimaryHueMidBrush" Value="{DynamicResource ValidationErrorBrush}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <StackPanel.DataContext>
+                                    <validation:AttributeValidationViewModel />
+                                </StackPanel.DataContext>
+
+                                <TextBlock Text="First Name" />
+                                <!--Explicitly setting the UpdateSourceTrigger to PropertyChanges so its updates the value as we type-->
+                                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Last Name"/>
+                                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Content="Submit" Command="{Binding SubmitCommand}" Margin="0,15"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                    </StackPanel>
+                </ScrollViewer>
+
             </Grid>
         </mdix:DrawerHost>
     </Window.Content>

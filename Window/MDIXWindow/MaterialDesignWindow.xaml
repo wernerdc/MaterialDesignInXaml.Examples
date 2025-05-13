@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:behaviors="clr-namespace:MDIXWindow.Behaviors" 
                     xmlns:views="clr-namespace:MDIXWindow">
+                    <!--xmlns:command="http://www.galasoft.ch/mvvmlight"-->
     <Style x:Key="MaterialDesignWindow" TargetType="Window" BasedOn="{StaticResource {x:Type Window}}">
         <Style.Resources>
             <ResourceDictionary>
@@ -60,7 +60,8 @@
                                           Grid.Row="0">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick" >
-                                        <command:EventToCommand Command="{x:Static views:MaterialDesignWindow.ToggleMaximize}" 
+                                        <!--<command:EventToCommand Command="{x:Static views:MaterialDesignWindow.ToggleMaximize}"--> 
+                                        <i:InvokeCommandAction Command="{x:Static views:MaterialDesignWindow.ToggleMaximize}" 
                                                                 CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>

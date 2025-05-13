@@ -1,0 +1,55 @@
+﻿using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+
+namespace MDIXWindow.Validation
+{
+    public class AttributeValidationViewModel : AnnotationValidationViewModel
+    {
+        private string _FirstName;
+        [Required(ErrorMessage = "A first name is required")]
+        [MinLength(3, ErrorMessage = "The first name must be at least 5 characters")]
+        public string FirstName
+        {
+            get => _FirstName;
+            set
+            {
+                SetProperty(ref _FirstName, value);
+                SubmitCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        private string _LastName;
+        [Required]
+        public string LastName
+        {
+            get => _LastName;
+            set
+            {
+                SetProperty(ref _LastName, value);
+                SubmitCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        public RelayCommand SubmitCommand { get; }
+
+        public AttributeValidationViewModel()
+        {
+            SubmitCommand = new RelayCommand(OnSubmit, CanSubmit);
+            //Doing this will cause the errors to show immediately
+            ValidateModel();
+        }
+
+        private bool CanSubmit()
+        {
+            //Link the CanExecute state of the command to the visible errors on the screen. 
+            //You can also separate the command from the validation errors and simply change this to match the one in SimpleViewModel.CanSubmit
+            return !HasErrors;
+        }
+
+        private void OnSubmit()
+        {
+            Debug.WriteLine("Form Submitted");
+        }
+    }
+}
