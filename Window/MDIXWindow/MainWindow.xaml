@@ -23,15 +23,15 @@
 
     </mdixWindow:MaterialDesignWindow.HeaderContent>
     <Window.Content>
-        <mdix:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}">
+        <!--<mdix:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}">
             <mdix:DrawerHost.LeftDrawerContent>
                 <TextBlock Width="250" TextWrapping="Wrap" Text="Some left drawer content here. Perhaps navigation options?" 
                            VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
-            </mdix:DrawerHost.LeftDrawerContent>
+            </mdix:DrawerHost.LeftDrawerContent>-->
             <Grid>
-                <TextBlock Text="Normal Window Content Goes Here" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <!--<TextBlock Text="Normal Window Content Goes Here" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <!--<ScrollViewer HorizontalScrollBarVisibility="Auto">-->
 
                     <StackPanel Orientation="Horizontal">
                         <GroupBox Header="No Validation" MinWidth="200" Margin="10">
@@ -145,10 +145,10 @@
                         </GroupBox>
 
                     </StackPanel>
-                </ScrollViewer>
+                <!--</ScrollViewer>-->
 
             </Grid>
-        </mdix:DrawerHost>
+        <!--</mdix:DrawerHost>-->
     </Window.Content>
 </Window>
 
